@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ACCP News App</title>
+    <!--<link rel="stylesheet" href="style.css">-->
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+      href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;500;600;700;800&family=Poppins:wght@400;500&display=swap"
+      rel="stylesheet">
+  <link rel="shortcut icon" href="./favicon.svg" type="image/svg+xml">
+
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@500&family=Roboto:wght@500&display=swap");
+
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-text-color: #183b56;
+            --secondary-text-color: #577592;
+            --accent-color: #2294ed;
+            --accent-color-dark: #f81010;
+        }
+
+        body {
+            font-family: "Poppins", sans-serif;
+            color: var(--primary-text-color);
+        }
+
+        p {
+            font-family: "Roboto", sans-serif;
+            color: var(--secondary-text-color);
+            line-height: 1.4rem;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        .flex {
+            display: flex;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 1180px;
+            margin-inline: auto;
+            overflow: hidden;
+        }
+
+        nav {
+            background-color: #f3fbff;
+            box-shadow: 0 0 4px #bbd0e2;
+            position: fixed;
+            top: 0;
+            z-index: 99;
+            left: 0;
+            right: 0;
+        }
+
+        .main-nav {
+            justify-content: space-between;
+            padding-block: 8px;
+        }
+
+        .company-logo img {
+            width: 50px;
+        }
+
+        .nav-links ul {
+            gap: 16px;
+        }
+
+        .hover-link {
+            cursor: pointer;
+        }
+
+        .hover-link:hover {
+            color: var(--secondary-text-color);
+        }
+
+        .hover-link:active {
+            color: red;
+        }
+
+        .nav-item.active {
+            color: var(--accent-color);
+        }
+
+        .search-bar {
+            height: 32px;
+            gap: 8px;
+        }
+
+        .news-input {
+            width: 200px;
+            height: 100%;
+            padding-inline: 12px;
+            border-radius: 4px;
+            border: 2px solid #bbd0e2;
+            font-family: "Roboto", sans-serif;
+        }
+
+        .search-button {
+            background-color: var(--accent-color);
+            color: white;
+            padding: 8px 24px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: "Roboto", sans-serif;
+        }
+
+        .search-button:hover {
+            background-color: var(--accent-color-dark);
+        }
+
+        main {
+            padding-block: 20px;
+            margin-top: 80px;
+        }
+
+        .cards-container {
+            justify-content: space-between;
+            flex-wrap: wrap;
+            row-gap: 20px;
+            align-items: start;
+        }
+
+        .card {
+            width: 360px;
+            min-height: 400px;
+            box-shadow: 0 0 4px #d4ecff;
+            border-radius: 4px;
+            cursor: pointer;
+            background-color: #fff;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            box-shadow: 1px 1px 8px #d4ecff;
+            background-color: #f9fdff;
+            transform: translateY(-2px);
+        }
+
+        .card-header img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+
+        .card-content {
+            padding: 12px;
+        }
+
+        .news-source {
+            margin-block: 12px;
+        }
+        iframe {
+            width: 100%;
+            border: none; /* Remove border */
+        }
+    </style>
+
+</head>
+
+<body>
+ 
+    <nav>
+             <!-- Include the header.html using iframe -->
+     <iframe id="headerFrame" src="header.html" frameborder="0"></iframe>
+        <div class="main-nav container flex">
+            <a href="#" onclick="reload()" class="company-logo">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/1/1f/ICDS_1.svg" alt="company logo">
+            </a>
+             
+            <div class="search-bar flex">
+                <input id="search-text" type="text" class="news-input" placeholder="e.g. Science">
+                <button id="search-button" class="search-button">Search</button>
+            </div>
+        </div>
+
+    </nav>
+
+
+    <main>
+        <div class="cards-container container flex" id="cards-container">
+
+        </div>
+    </main>
+
+    <template id="template-news-card">
+        <div class="card">
+            <div class="card-header">
+                <img src="https://via.placeholder.com/400x200" alt="news-image" id="news-img">
+            </div>
+            <div class="card-content">
+                <h3 id="news-title">This is the Title</h3>
+                <h6 class="news-source" id="news-source">End Gadget 26/08/2023</h6>
+                <p class="news-desc" id="news-desc">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Recusandae
+                    saepe quis voluptatum quisquam vitae doloremque facilis molestias quae ratione cumque!</p>
+            </div>
+        </div>
+    </template>
+
+
+<!--2nd part of news -->
+
+<div class="container mt-5">
+    <!-- Caption for News Updates Section -->
+    <h2 class="text-center mb-4">News Updates Section</h2>
+    <!-- Orange color line -->
+    <hr>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-body" style="padding: 6.3rem;">
+                    <h5 class="card-title">Recruitment / Vacancies</h5>
+                    <p class="card-text">Visit this link to view latest Recruitment news</p>
+                    <a href="https://wcd.nic.in/archive-notification/2319" target="_blank"
+                        class="btn btn-primary">Read More</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-body"  style="padding: 6.3rem;">
+                    <h5 class="card-title">Schemes</h5>
+                    <p class="card-text">Visit this link to view all the Schemes introduced by ICDS</p>
+                    <a href="https://icds.gov.in/Forms/Schemes.aspx" target="_blank" class="btn btn-primary">Read
+                        More</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-body"  style="padding: 6.3rem;">
+                    <h5 class="card-title">Latest news</h5>
+                    <p class="card-text">Visit this link to view latest news</p>
+                    <a href="https://icds.gov.in/Forms/View_News.aspx" target="_blank" class="btn btn-primary">Read
+                        More</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-body"  style="padding: 6.3rem;">
+                    <h5 class="card-title">Meetings / Events</h5>
+                    <p class="card-text">Visit this link to read all about the meetings events of ICDS</p>
+                    <a href="https://wcd.nic.in/archive-notification/2317" target="_blank"
+                        class="btn btn-primary">Read More</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-body" style="padding: 6.3rem;">
+                    <h5 class="card-title">Annual Reports</h5>
+                    <p class="card-text">Visit this link to read Annual Reports by the ICDS</p>
+                    <a href="https://wcd.nic.in/annual-report" target="_blank" class="btn btn-primary">Read More</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-body"  style="padding: 6.3rem;">
+                    <h5 class="card-title">Tenders</h5>
+                    <p class="card-text">Visit this link to read all about the latest ICDS Tenders</p>
+                    <a href="https://wcd.nic.in/past-tenders" target="_blank" class="btn btn-primary">Read More</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+     <!-- Include the footer.html using iframe -->
+  <iframe id="footerFrame" src="footer.html" frameborder="0"></iframe>
+
+    <script>
+        const API_KEY = "8d2471a6b84c45f492b8f126a9844ef4";
+        const url = "https://newsapi.org/v2/everything?q=";
+
+        window.addEventListener("load", () => fetchNews("India"));
+
+        function reload() {
+            window.location.reload();
+        }
+
+        // Navbar on-click changes
+        function onNavItemClick(id) {
+            fetchNews(id);
+
+            // Remove 'active' class from previously active tag
+            const prevActiveNav = document.querySelector('.nav-item.active');
+            if (prevActiveNav) {
+                prevActiveNav.classList.remove('active');
+            }
+
+            // Add 'active' class to the clicked tag
+            const navItem = document.getElementById(id);
+            navItem.classList.add('active');
+        }
+
+
+        async function fetchNews(query) {
+            let subjectQuery = "";
+            switch (query) {
+
+                case "nutrition":
+                    subjectQuery = "nutrition india OR breastfeeding practices india OR child health india";
+                    break;
+                case "health":
+                    subjectQuery = "maternal health india OR child healthcare india OR immunization india";
+                    break;
+                case "education":
+                    subjectQuery = "early childhood education india OR literacy initiatives india";
+                    break;
+                case "community":
+                    subjectQuery = "community development india OR women empowerment india";
+                    break;
+                case "policies":
+                    subjectQuery = "Anganwadi Sevikas OR government policies OR welfare programs OR ICDS";
+                    break;
+                default:
+                    subjectQuery = query; // If query doesn't match any specific subject, use it as is
+                    break;
+            }
+
+            const country = "in";
+            const apiUrl = `https://newsapi.org/v2/everything?q=${subjectQuery}&country=${country}&apiKey=${API_KEY}`;
+            const res = await fetch(`${url}${subjectQuery}&apiKey=${API_KEY}`);
+            const data = await res.json();
+            bindData(data.articles);
+        }
+
+        // Define a function to fetch news articles at regular intervals
+        function fetchNewsPeriodically(query) {
+            // Call fetchNews function to fetch news articles
+            fetchNews(query);
+
+            // Set up a timer to fetch news articles every X seconds (e.g., every 5 minutes)
+            const intervalSeconds = 60; // 1 minute
+            setInterval(() => {
+                fetchNews(query);
+            }, intervalSeconds * 1000); // Convert seconds to milliseconds
+        }
+
+        // Call fetchNewsPeriodically function on page load to start fetching news articles
+        window.addEventListener("load", () => fetchNewsPeriodically("India"));
+
+
+
+        function bindData(articles) {
+            const cardsContainer = document.getElementById("cards-container");
+            const newsCardTemplate = document.getElementById("template-news-card");
+
+            cardsContainer.innerHTML = "";
+
+            articles.forEach((article) => {
+                if (!article.urlToImage) return;
+                const cardClone = newsCardTemplate.content.cloneNode(true);
+                fillDataInCard(cardClone, article);
+                cardsContainer.appendChild(cardClone);
+            });
+        }
+
+        function fillDataInCard(cardClone, article) {
+            const newsImg = cardClone.querySelector("#news-img");
+            const newsTitle = cardClone.querySelector("#news-title");
+            const newsSource = cardClone.querySelector("#news-source");
+            const newsDesc = cardClone.querySelector("#news-desc");
+
+            newsImg.src = article.urlToImage;
+            newsTitle.innerHTML = article.title;
+            newsDesc.innerHTML = article.description;
+
+            const date = new Date(article.publishedAt).toLocaleString("en-US", {
+                timeZone: "Asia/Jakarta",
+            });
+
+            newsSource.innerHTML = `${article.source.name} · ${date}`;
+
+            cardClone.firstElementChild.addEventListener("click", () => {
+                window.open(article.url, "_blank");
+            });
+        }
+
+        let curSelectedNav = null;
+        function onNavItemClick(id) {
+            fetchNews(id);
+            const navItem = document.getElementById(id);
+            curSelectedNav?.classList.remove("active");
+            curSelectedNav = navItem;
+            curSelectedNav.classList.add("active");
+        }
+
+        const searchButton = document.getElementById("search-button");
+        const searchText = document.getElementById("search-text");
+
+        searchButton.addEventListener("click", () => {
+            const query = searchText.value;
+            if (!query) return;
+            fetchNews(query);
+            curSelectedNav?.classList.remove("active");
+            curSelectedNav = null;
+        });
+    </script>
+
+<script>
+    window.onload = function() {
+        // Get the height of the content in footer.html
+        var iframe = document.getElementById('footerFrame');
+        var iframeDocument = iframe.contentDocument || iframe.contentWindow.document;
+        var height = iframeDocument.body.scrollHeight;
+
+        // Set the height of the iframe to accommodate the content
+        iframe.style.height = height + 'px';
+    }
+</script>
+
+
+
+
+
+
+ 
+</body>
+
+</html>
